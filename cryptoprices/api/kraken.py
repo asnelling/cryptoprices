@@ -12,8 +12,14 @@ class KrakenApi:
     def __init__(self, ticks: asyncio.Queue):
         self.ticks = ticks
     
-
     async def subscribe(self, products: Sequence[str]):
+        while True:
+            try:
+                await self._subscribe_once(products)
+            except websockets.exceptions.ConnectionClosedError:
+                pass
+
+    async def _subscribe_once(self, products: Sequence[str]):
         url = "wss://ws.kraken.com"
 
         async with websockets.connect(url) as ws:
