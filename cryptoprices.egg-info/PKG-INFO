@@ -1,0 +1,22 @@
+Metadata-Version: 2.1
+Name: cryptoprices
+Version: 0.0.1
+Summary: Monitor crypto prices from multiple exchanges
+Home-page: https://github.com/asnelling/cryptoprices
+Author: Addison Snelling
+Author-email: addison@asnell.io
+License: UNKNOWN
+Project-URL: Bug Tracker, https://github.com/asnelling/cryptoprices/issues
+Description: # cryptoprices
+        
+        Monitor crypto prices from multiple exchanges.
+        
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)
+Classifier: Operating System :: OS Independent
+Classifier: Intended Audience :: Financial and Insurance Industry
+Classifier: Topic :: Office/Business :: Financial :: Investment
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown

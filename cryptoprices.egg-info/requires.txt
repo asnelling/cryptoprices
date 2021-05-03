@@ -1,0 +1,2 @@
+websockets>=9.0
+signalr-client-aio>=0.0
