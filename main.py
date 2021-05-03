@@ -3,6 +3,7 @@ import os
 
 from argparse import ArgumentParser
 from configparser import ConfigParser
+from typing import Sequence
 
 from cryptoprices.api.bittrex import BittrexApi
 from cryptoprices.api.coinbase_pro import CoinbaseProApi
@@ -27,7 +28,7 @@ class Config:
         self.enabled_products = enabled_products
     
 
-    def get_products(self, exchange: str) -> list[str]:
+    def get_products(self, exchange: str) -> Sequence[str]:
         return self.enabled_products[exchange]
 
 

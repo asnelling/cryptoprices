@@ -4,6 +4,7 @@ import websockets
 import requests
 
 from datetime import datetime
+from typing import Sequence
 
 from .tick import Tick
 
@@ -13,7 +14,7 @@ class KuCoinApi:
         self.ticks = ticks
     
 
-    async def subscribe(self, products: list[str]):
+    async def subscribe(self, products: Sequence[str]):
         (token, server) = self.get_connect_params()
         url = f"{server}?token={token}"
 

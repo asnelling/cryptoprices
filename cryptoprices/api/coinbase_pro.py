@@ -3,6 +3,7 @@ import json
 import websockets
 
 from datetime import datetime
+from typing import Sequence
 
 from .tick import Tick
 
@@ -12,7 +13,7 @@ class CoinbaseProApi:
         self.ticks = ticks
     
 
-    async def subscribe(self, products: list[str]):
+    async def subscribe(self, products: Sequence[str]):
         url = "wss://ws-feed.pro.coinbase.com"
 
         async with websockets.connect(url) as ws:

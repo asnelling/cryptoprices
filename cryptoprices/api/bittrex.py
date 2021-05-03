@@ -2,6 +2,7 @@ import asyncio
 import json
 
 from base64 import b64decode
+from typing import Sequence
 from zlib import decompress, MAX_WBITS
 
 from signalr_aio import Connection
@@ -21,7 +22,7 @@ class BittrexApi:
         self.hub = connection.register_hub("c3")
         self.connection = connection
     
-    async def subscribe(self, products: list[str]):
+    async def subscribe(self, products: Sequence[str]):
         self.hub.client.on("ticker", self.on_ticker)
         self.hub.server.invoke("Subscribe", [f"ticker_{x}" for x in products])
         await asyncio.to_thread(self.connection.start)
