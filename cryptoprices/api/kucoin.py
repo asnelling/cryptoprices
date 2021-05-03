@@ -37,7 +37,7 @@ class KuCoinApi:
                 await self.ticks.put(Tick(
                     exchange="kucoin",
                     pair=pair,
-                    price=price,
+                    price=float(price),
                 ))
     
     def get_connect_params(self):

@@ -37,5 +37,5 @@ class KrakenApi:
                 await self.ticks.put(Tick(
                     exchange="kraken",
                     pair=pair,
-                    price=price,
+                    price=float(price),
                 ))

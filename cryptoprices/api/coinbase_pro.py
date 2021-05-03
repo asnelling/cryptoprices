@@ -37,6 +37,6 @@ class CoinbaseProApi:
                 await self.ticks.put(Tick(
                     exchange="coinbase_pro",
                     pair=product_id,
-                    price=price,
+                    price=float(price),
                     created_at=created_at,
                 ))

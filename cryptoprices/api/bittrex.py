@@ -48,7 +48,7 @@ class BittrexApi:
         await self.ticks.put(Tick(
             exchange="bittrex",
             pair=symbol,
-            price=rate,
+            price=float(rate),
         ))
     
     def process_message(self, message):
