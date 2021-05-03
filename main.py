@@ -45,7 +45,6 @@ async def watch_queue(queue: asyncio.Queue):
         while not queue.empty():
             tick: Tick = await queue.get()
             p = Point("tick").tag("exchange", tick.exchange).tag("pair", tick.pair).field("price", tick.price).time(tick.created_at.isoformat())
-            print(f"{tick.exchange} {tick.pair} {tick.price} {tick.created_at}")
             records.append(p)
 
         if len(records) > 0:
