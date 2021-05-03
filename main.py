@@ -45,6 +45,7 @@ async def watch_queue(queue: asyncio.Queue):
         while not queue.empty():
             tick: Tick = await queue.get()
             p = Point("tick").tag("exchange", tick.exchange).tag("pair", tick.pair).field("price", tick.price).time(tick.created_at.isoformat())
+            print(f"{tick.exchange} {tick.pair} {tick.price} {tick.created_at}")
             records.append(p)
 
         if len(records) > 0:
@@ -65,7 +66,7 @@ async def start(args):
 
     await asyncio.gather(
         watch_queue(queue),
-        api.subscribe(config.get_products("bittrex")),
+        api.start(config.get_products("bittrex")),
         coinbase_pro_api.subscribe(config.get_products("coinbase_pro")),
         kraken_api.subscribe(config.get_products("kraken")),
         kucoin_api.subscribe(config.get_products("kucoin")),

@@ -11,21 +11,27 @@ from .tick import Tick
 
 
 class BittrexApi:
+    url = "https://socket-v3.bittrex.com/signalr"
+
     def __init__(self, ticks: asyncio.Queue):
         self.ticks = ticks
-
-        connection = Connection("https://socket-v3.bittrex.com/signalr", session=None)
-
-        # connection.received += self.on_message
-        connection.error += self.on_error
-
-        self.hub = connection.register_hub("c3")
-        self.connection = connection
     
     async def subscribe(self, products: Sequence[str]):
         self.hub.client.on("ticker", self.on_ticker)
         self.hub.server.invoke("Subscribe", [f"ticker_{x}" for x in products])
-        await asyncio.to_thread(self.connection.start)
+        # await asyncio.to_thread(self.connection.start)
+    
+    async def connect(self):
+        connection = Connection(self.url)
+        self.hub = connection.register_hub("c3")
+        connection.error += self.on_error
+        connection.start()
+        print("connected to bittrex")
+    
+    async def start(self, products: Sequence[str]):
+        await self.connect()
+        await self.subscribe(products)
+        print("starting bittrex")
     
     async def on_error(self, msg):
         print(msg)
