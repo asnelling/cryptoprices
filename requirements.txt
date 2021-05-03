@@ -1,4 +1,5 @@
 black
+influxdb-client
 pylint
 requests
 rope

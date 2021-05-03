@@ -1,4 +1,5 @@
 import asyncio
+import os
 
 from argparse import ArgumentParser
 from configparser import ConfigParser
@@ -7,6 +8,10 @@ from cryptoprices.api.bittrex import BittrexApi
 from cryptoprices.api.coinbase_pro import CoinbaseProApi
 from cryptoprices.api.kraken import KrakenApi
 from cryptoprices.api.kucoin import KuCoinApi
+from cryptoprices.api.tick import Tick
+
+from influxdb_client import InfluxDBClient, Point
+from influxdb_client.client.write_api import SYNCHRONOUS
 
 
 class Config:
@@ -27,9 +32,25 @@ class Config:
 
 
 async def watch_queue(queue: asyncio.Queue):
+    bucket = os.environ["CRYPTOPRICES_INFLUXDB_BUCKET"]
+    org = os.environ["CRYPTOPRICES_INFLUXDB_ORG"]
+    token = os.environ["CRYPTOPRICES_INFLUXDB_TOKEN"]
+    url = os.environ["CRYPTOPRICES_INFLUXDB_URL"]
+    client = InfluxDBClient(url=url, token=token, org=org)
+    write_api = client.write_api(write_options=SYNCHRONOUS)
+
     while True:
-        tick = await queue.get()
-        print(f"{tick.exchange} {tick.pair} {tick.price} {tick.created_at}")
+        records = []
+        while not queue.empty():
+            tick: Tick = await queue.get()
+            p = Point("tick").tag("exchange", tick.exchange).tag("pair", tick.pair).field("price", tick.price).time(tick.created_at.isoformat())
+            records.append(p)
+
+        if len(records) > 0:
+            write_api.write(bucket=bucket, org=org, record=records)
+            records = []
+        
+        await asyncio.sleep(5)
 
 
 async def start(args):
